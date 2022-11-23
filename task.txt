@@ -1,0 +1,103 @@
+
+def greet():
+    print("-------------------")
+    print("  Крестики нолики  ")
+    print("-------------------")
+    print("Формат ввода : x y ")
+    print(" x - Номер строки  ")
+    print(" y - Номер столбца ")
+
+greet()
+
+field=[[" "]*3 for i in range(3)]
+
+def show():
+    print()
+    print("    | 0 | 1 | 2 |")
+    print("  ---------------")
+    for i,row in enumerate(field):
+        row_str=f"  {i} | {' | '.join(map(str,row))} | "
+        print(row_str)
+        print("  ---------------")
+    print()
+
+show()
+
+
+def ask():
+    while True:
+        cords=input("      Ваш ход:").split()
+        if len(cords) !=2:
+            print("Введите две координаты! ")
+            continue
+        x,y=cords
+        if not (x.isdigit())or not (y.isdigit):
+            print("Введите числа!")
+            continue
+        x,y=int(x),int(y)
+        if 0>x or x>2 or 0>y or y>2:
+            print("Введите правильные координаты ! (0 1 2)" )
+            continue
+        if field[x][y] !=" ":
+            print("Клетка занята!")
+            continue
+        return x,y
+
+ask()
+
+def check_win():
+    for i in range(3):
+        symbol=[]
+        for j in range(3):
+            symbol.append(field[i][j])
+        if symbol==["0","0","0"]or symbol ==["x","x","x"]:
+            return True
+
+    for i in range(3):
+        symbol=[]
+        for j in range(3):
+            symbol.append(field[j][i])
+        if symbol==["0","0","0"]or symbol ==["x","x","x"]:
+            return True
+
+    symbol = []
+    for i in range(3):
+        symbol.append(field[i][i])
+    if symbol == ["0","0","0"]or symbol ==["x","x","x"]:
+        return True
+
+    symbol = []
+    for i in range(3):
+        symbol.append(field[i][2-i])
+    if symbol == ["0","0","0"]or symbol ==["x","x","x"]:
+        return True
+
+    return False
+check_win()
+
+count=0
+while True:
+    show()
+    count +=1
+    if count % 2 == 1:
+        print("Ходит крестик")
+    else:
+        print("Ходит нолик")
+    x,y=ask()
+    if count % 2 == 1:
+        field[x][y]="x"
+        print("Выиграл x!!!")
+    else:
+        field[x][y]="0"
+        print("Выиграл 0!!!")
+
+    if check_win():
+        print("Игра окончена")
+        break
+
+    if count  == 9:
+        print("Ничья!")
+        break
+
+
+
